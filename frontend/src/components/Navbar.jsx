@@ -34,7 +34,11 @@ const Navbar = () => {
        <div className="flex gap-5 cursor-pointer md:gap-8">
        <img src={profile_icon} alt="" className='w-5 h-5'/>
        <img src={search_icon} alt="" className='w-5 h-5'/>
+       <div className='relative'>
        <img src={cart_icon} alt="" className='w-5 h-5'/>
+       <span className=' flex items-center justify-center w-[18px] h-[18px] text-[10px] text-white bg-black rounded-full font-prata absolute bottom-[-50%] right-[-50%]'>0</span>
+       </div>
+       
        
        </div>
        <img src={menu_icon} className='w-5 h-5 lg:hidden' onClick={()=>{setOpenMenu((prev)=>!prev)}}/>
@@ -43,13 +47,13 @@ const Navbar = () => {
     </motion.div>
 
     <AnimatePresence >
-   {openMenu &&<motion.div className='fixed top-0 left-0 right-0 z-50 h-full shadow-lg bg-slate-200' initial={{y:"-80px" , opacity:0}} animate={{y:0 ,opacity:1}} transition={{type:"tween",duration:0.3,ease:"easeInOut"}} exit={{y:"-80px",opacity:0}}>
+   {openMenu &&<motion.div className='fixed top-0 left-0 right-0 z-50 h-full bg-white shadow-lg ' initial={{y:"-80px" , opacity:0}} animate={{y:0 ,opacity:1}} transition={{type:"tween",duration:0.3,ease:"easeInOut"}} exit={{y:"-80px",opacity:0}}>
     <RxCross2 className='absolute text-2xl right-10 top-5' onClick={()=>{setOpenMenu(false) }}/>
     <ul className='flex flex-col px-10 py-20 text-3xl text-right uppercase gap-7 '>
-        <li className='transition duration-300 hover:text-blue-600 '><Link to={'/'}>home</Link></li>
-        <li className='transition duration-300 hover:text-blue-600'><Link to={'/collection'}>collection</Link></li>
-        <li className='transition duration-300 hover:text-blue-600'><Link to={'/about'}>about</Link></li>
-        <li className='transition duration-300 hover:text-blue-600'><Link to={'/contact'}>contact</Link></li>
+        <li className='transition duration-300 hover:text-gray-600 '><Link to={'/'}>home</Link></li>
+        <li className='transition duration-300 hover:text-gray-600'><Link to={'/collection'}>collection</Link></li>
+        <li className='transition duration-300 hover:text-gray-600'><Link to={'/about'}>about</Link></li>
+        <li className='transition duration-300 hover:text-gray-600'><Link to={'/contact'}>contact</Link></li>
        
       </ul>
     </motion.div>}

@@ -6,11 +6,13 @@ import Collection from "./pages/Collection";
 import SingleProduct from "./pages/SingleProduct"
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Footer from "./components/Footer";
 const AppLayout = () => {
   return (
     <div>
       <Navbar />
       <Outlet />
+      <Footer/>
     </div>
   );
 };
