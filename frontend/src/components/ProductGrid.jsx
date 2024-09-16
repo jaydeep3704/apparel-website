@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Product from "./Product";
 import Title from "./Title";
-
+import { useDispatch } from "react-redux";
+import { setProducts } from "../store/productSlice";
 const ProductGrid = () => {
   const [latestProducts, setLatestProducts] = useState([]);
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
-
+  const dispatch=useDispatch()
   const fetchProducts = async () => {
     try {
       const res = await fetch("https://api.foreverbuy.in/api/product/list");
       const json = await res.json();
       const products = json.products;
+      dispatch(setProducts(products))
       const bestSeller = products.filter(
         (product) => product.bestseller == true
       );

@@ -11,11 +11,13 @@ import cart_icon from "../assets/icons/cart_icon.png"
 import menu_icon from "../assets/icons/menu_icon.png"
 import search_icon from "../assets/icons/search_icon.png"
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { setSearchVisible } from '../store/searchSlice';
 const Navbar = () => {
   
   const [openMenu,setOpenMenu]=useState(false)
   const navigate=useNavigate()
+  const dispatch=useDispatch()
 
   return (
     <>
@@ -33,7 +35,12 @@ const Navbar = () => {
        </ul>
        <div className="flex gap-5 cursor-pointer md:gap-8">
        <img src={profile_icon} alt="" className='w-5 h-5'/>
-       <img src={search_icon} alt="" className='w-5 h-5'/>
+       <Link to={'/collection'}>
+       <img src={search_icon} alt="" className='w-5 h-5' onClick={()=>{
+        dispatch(setSearchVisible(true))
+       }}/>
+       </Link>
+       
        <div className='relative'>
        <img src={cart_icon} alt="" className='w-5 h-5'/>
        <span className=' flex items-center justify-center w-[18px] h-[18px] text-[10px] text-white bg-black rounded-full font-prata absolute bottom-[-50%] right-[-50%]'>0</span>

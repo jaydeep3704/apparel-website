@@ -7,10 +7,14 @@ import SingleProduct from "./pages/SingleProduct"
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import SearchBar from "./components/SearchBar";
 const AppLayout = () => {
   return (
     <div>
       <Navbar />
+      <SearchBar/>
       <Outlet />
       <Footer/>
     </div>
@@ -59,7 +63,9 @@ const appRouter=createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={appRouter}/>
+    <Provider store={store}>
+        <RouterProvider router={appRouter}/>
+    </Provider>
   );
 }
 
