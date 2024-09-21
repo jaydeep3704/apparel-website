@@ -1,14 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import star from "../assets/icons/star_icon.png"
 import dullStar from "../assets/icons/star_dull_icon.png"
+import { addToCart } from "../store/cartSlice";
+import RelatedProducts from "../components/RelatedProducts";
 const SingleProduct = () => {
   const { id } = useParams();
   const products = useSelector((store) => store.product.products);
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState("");
   const [size,setSize]=useState("");
+  const dispatch=useDispatch()
+
+
+  const handleAddToCart=(productData)=>{
+        const {image,name,price,_id}=productData
+        if(size!=="")
+        { dispatch(addToCart({
+          image:image[0],
+          name:name,
+          price:price,
+          size:size,
+          id:_id,
+          quantity:1
+        }))
+        }
+        else{
+          alert("Select size")
+        }
+  }
+
+
   const fetchProductInfo = async () => {
     try {
       const product = products.filter((product) => {
@@ -23,7 +46,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     fetchProductInfo();
-  }, []);
+  }, [id]);
 
   return productData ? 
   <div className="w-full px-5 pt-10 transition-opacity duration-500 ease-in border-t-2 opacity-100 md:px-40 sm:px-10 ">
@@ -62,12 +85,12 @@ const SingleProduct = () => {
               {
                 productData.sizes.map((item,index)=>{
                   return(
-                    <button className={`border py-2 px-4 bg-gray-100 ${item==size ? 'border-orange-500':''}`} onClick={()=>setSize(item)}>{item}</button>
+                    <button className={`border py-2 px-4 bg-gray-100 ${item==size ? 'border-orange-500':''}`} onClick={()=>setSize(item)} key={index}>{item}</button>
                   )
                 })
               }
               </div>
-              <button className="w-40 py-2 mt-2 text-center text-white bg-black border-none oultine-none">ADD TO CART</button>
+              <button className="w-40 py-2 mt-2 text-center text-white bg-black border-none oultine-none" onClick={()=>handleAddToCart(productData)}>ADD TO CART</button>
               <div className="flex flex-col gap-2 py-5 mt-5 text-sm text-gray-500 border-t border-gray-300">
                   <p>100% Original product.</p>
                   <p>Cash on delivery is available on this product.</p>
@@ -88,6 +111,7 @@ const SingleProduct = () => {
     </div>
 
     {/* Related Products */}
+    <RelatedProducts products={products} category={productData.category} subCategory={productData.subCategory}/>
 
   </div> : 
   <div></div>;

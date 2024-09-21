@@ -1,7 +1,8 @@
 import React,{useEffect,useState} from "react";
 import Product from "../components/Product";
 import { useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
+import { setProducts } from "../store/productSlice";
 
 
 const Collection = () => {
@@ -11,14 +12,16 @@ const Collection = () => {
   const [categories,setCategories]=useState([])
   const [subcategories,setSubcategories]=useState([])
   const searchText=useSelector((store)=>store.search.searchText)
-
+ const dispatch=useDispatch()
   const fetchProductInfo=async ()=>{
     try {
       const res = await fetch("https://api.foreverbuy.in/api/product/list");
       const json = await res.json();
       const products = json.products;
+
       setProducts(products)
       setFilteredProducts(products)
+      dispatch(setProducts(products))
      } catch (error) {
       console.log("Collection Fetch ",error)
      }
