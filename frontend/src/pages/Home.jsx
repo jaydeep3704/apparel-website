@@ -5,7 +5,7 @@ import Ourpolicy from '../components/Ourpolicy'
 import NewsLetter from '../components/NewsLetter'
 const Home = () => {
   return (
-    <div className='px-5 md:px-40 sm:px-10'>
+    <div className='px-5 lg:px-40 sm:px-10'>
         <Banner/>
         <ProductGrid />
         <Ourpolicy/>

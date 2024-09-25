@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import CartItem from "../components/CartItem";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import emptyCart from "../assets/icons/abandoned-cart.png";
-import { setTotal } from "../store/cartSlice";
+
+import { useNavigate } from "react-router-dom";
+import CartTotal from "../components/CartTotal";
 
 
 
@@ -11,21 +13,16 @@ const Cart = () => {
 
 
 
-
-  const deliveryFee=20
   const cartItems = useSelector((store) => store.cart.cart_items);
-  const total=useSelector((store)=>store.cart.totalPrice)
-  const dispatch=useDispatch()  
-  useEffect(()=>{
-     dispatch(setTotal())
-  },[cartItems])
-  
+  const navigate=useNavigate()
+
+ 
   
 
 
   return cartItems.length > 0 ? (
-    <div className="px-5 md:px-40 sm:px-10">
-      <div className="p-5">
+    <div className="px-5 lg:px-40 md:px-20 sm:px-10">
+      <div className="">
         <div className="flex items-center gap-3 py-5 text-2xl border-b border-gray-300">
           <span className="font-medium text-gray-600">YOUR</span>
           <span className="font-medium text-black">CART</span>
@@ -49,20 +46,14 @@ const Cart = () => {
           })}
         </div>
 
-        <div className="flex w-full mt-10 md:justify-end">
-          <div className="flex flex-col w-full mt-8 lg:w-1/3">
-            <div className="flex items-center gap-3 py-5 text-2xl ">
-              <span className="font-medium text-gray-600">CART</span>
-              <span className="font-medium text-black">TOTALS</span>
-              <span className="w-[50px] h-[2px] block bg-black"></span>
+          <div className="flex justify-end w-full">
+            <div className="flex flex-col items-end w-full lg:w-1/3">
+              <CartTotal/>
+              <button className="lg:w-1/2 w-full py-2.5 mt-5 font-semibold text-white bg-black text-md " onClick={()=>navigate('/place-order')}>PROCEED TO CHECKOUT</button>
             </div>
-             <p className="flex justify-between py-2 border-b border-gray-300"><span>Subtotal</span><span>${total}</span></p>
-             <p className="flex justify-between py-2 border-b border-gray-300"><span>Delivery Fee</span><span>${deliveryFee}</span></p>
-             <p className="flex justify-between py-2 font-medium "><span>Total</span><span>${total+deliveryFee}</span></p>
-             <button className="px-8 py-[10px] mt-5 font-medium text-white bg-black border-none outline-non self-end">PROCEED TO CHECKOUT</button>
+          
           </div>
-        </div>
-
+       
       </div>
     </div>
   ) : (

@@ -49,7 +49,7 @@ const SingleProduct = () => {
   }, [id]);
 
   return productData ? 
-  <div className="w-full px-5 pt-10 transition-opacity duration-500 ease-in border-t-2 opacity-100 md:px-40 sm:px-10 ">
+  <div className="w-full px-5 pt-10 transition-opacity duration-500 ease-in opacity-100 lg:px-40 sm:px-10 ">
     {/* Product Data  */}
     <div className="flex flex-col h-full gap-12 sm:gap-12 sm:flex-row">
         {/* product images  */}

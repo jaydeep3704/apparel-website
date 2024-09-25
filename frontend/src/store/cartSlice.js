@@ -51,6 +51,9 @@ const cartSlice = createSlice({
       });
       state.totalPrice = total;
     },
+
+    
+
   },
 });
 

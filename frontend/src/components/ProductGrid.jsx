@@ -32,7 +32,7 @@ const ProductGrid = () => {
     // BestSeller
     <div className="w-full">
       <div className="w-full my-10">
-        <div className="py-8 text-3xl text-center">
+        <div className="flex justify-center py-8 text-3xl text-center">
           <Title text1={"LATEST"} text2={"COLLECTIONS"} />
         </div>
         <div className="grid grid-cols-2 gap-4 gird sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-6">
@@ -50,7 +50,7 @@ const ProductGrid = () => {
         </div>
       </div>
       <div className="w-full my-10">
-        <div className="py-8 text-3xl text-center">
+        <div className="flex justify-center py-8 text-3xl text-center">
           <Title text1={"BEST"} text2={"SELLERS"} />
         </div>
         <div className="grid grid-cols-2 gap-4 gird sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-6">

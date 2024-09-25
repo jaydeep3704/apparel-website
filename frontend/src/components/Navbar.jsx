@@ -18,12 +18,16 @@ const Navbar = () => {
   const [openMenu,setOpenMenu]=useState(false)
   const navigate=useNavigate()
   const dispatch=useDispatch()
-  const totalItems=useSelector((store)=>store.cart.cart_items)
-  
+  const cart_items=useSelector((store)=>store.cart.cart_items)
+  let total_items=0
+  cart_items.forEach((item)=>{
+      total_items+=item.quantity
+  })
+
 
   return (
     <>
-    <motion.div  initial={{y:-100,opacity:0}} animate={{y:0,opacity:1}}   transition={{duration:0.4,ease:"easeIn"}}  whileInView={{opacity:1}}   className='sticky top-0 left-0 right-0 z-10 flex items-center justify-between w-full h-20 px-5 bg-white md:px-40 sm:px-10' >
+    <motion.div  initial={{y:-100,opacity:0}} animate={{y:0,opacity:1}}   transition={{duration:0.4,ease:"easeIn"}}  whileInView={{opacity:1}}   className='sticky top-0 left-0 right-0 z-10 flex items-center justify-between w-full h-20 px-5 bg-white lg:px-40 sm:px-10' >
 
       <div className='flex items-center justify-between w-full pb-3 border-b border-gray-300'>
       <img src={Logo} alt="" className='cursor-pointer h-9 md:h-12' onClick={()=>navigate('/')}/>
@@ -36,7 +40,8 @@ const Navbar = () => {
        
        </ul>
        <div className="flex gap-5 cursor-pointer md:gap-8">
-       <img src={profile_icon} alt="" className='w-5 h-5'/>
+        <Link to={'/login'}> <img src={profile_icon} alt="" className='w-5 h-5'/></Link>
+       
        <Link to={'/collection'}>
        <img src={search_icon} alt="" className='w-5 h-5' onClick={()=>{
         dispatch(setSearchVisible(true))
@@ -45,7 +50,7 @@ const Navbar = () => {
        
        <div className='relative'>
         <Link to={'/cart'}> <img src={cart_icon} alt="" className='w-5 h-5'/></Link>
-       <span className=' flex items-center justify-center w-[18px] h-[18px] text-[10px] text-white bg-black rounded-full font-prata absolute bottom-[-50%] right-[-50%]'>{totalItems.length}</span>
+       <span className=' flex items-center justify-center w-[18px] h-[18px] text-[10px] text-white bg-black rounded-full font-prata absolute bottom-[-50%] right-[-50%]'>{total_items}</span>
        </div>
        
        

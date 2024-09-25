@@ -11,6 +11,9 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import SearchBar from "./components/SearchBar";
 import Cart from "./pages/Cart";
+import PlaceOrder from "./pages/PlaceOrder";
+import Order from "./pages/Order"
+import Login from "./pages/Login";
 const AppLayout = () => {
   return (
     <div>
@@ -54,6 +57,21 @@ const appRouter=createBrowserRouter([
       {
         path:'/cart',
         element:<Cart/>
+      },
+      {
+        path:'/place-order',
+        element:<PlaceOrder/>
+
+      },
+      {
+        path:'/orders',
+        element:<Order/>
+
+      },
+      {
+        path:'/login',
+        element:<Login/>
+
       }
 
 
