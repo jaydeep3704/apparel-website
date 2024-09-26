@@ -21,7 +21,7 @@ const Cart = () => {
 
 
   return cartItems.length > 0 ? (
-    <div className="px-5 lg:px-40 md:px-20 sm:px-10">
+    <div className="px-[4%]">
       <div className="">
         <div className="flex items-center gap-3 py-5 text-2xl border-b border-gray-300">
           <span className="font-medium text-gray-600">YOUR</span>

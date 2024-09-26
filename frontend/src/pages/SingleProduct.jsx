@@ -49,11 +49,11 @@ const SingleProduct = () => {
   }, [id]);
 
   return productData ? 
-  <div className="w-full px-5 pt-10 transition-opacity duration-500 ease-in opacity-100 lg:px-40 sm:px-10 ">
+  <div className="w-full pt-10 transition-opacity duration-500 ease-in opacity-100 px-[4%] ">
     {/* Product Data  */}
     <div className="flex flex-col h-full gap-12 sm:gap-12 sm:flex-row">
         {/* product images  */}
-       <div className="flex flex-col-reverse flex-1 gap-3 sm:flex-row ">
+       <div className="flex flex-col-reverse gap-3 md:flex-row ">
           <div className="flex justify-between sm:flex-col sm:justify-normal sm:w-[18.7%] w-full">
               {
                 productData.image.map((item,index)=>{

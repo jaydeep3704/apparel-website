@@ -111,7 +111,7 @@ const Collection = () => {
 
 
   return (
-    <div className="flex flex-col justify-between gap-10 px-5 mt-10 lg:px-40 sm:px-10 md:flex-row">
+    <div className="flex flex-col justify-between gap-10 px-[4%] mt-10  md:flex-row">
       {/* filters */}
       <div className="flex flex-col gap-5 lg:w-[20%] w-full">
         <p className="mb-3 text-xl font-medium uppercase">Filters</p>

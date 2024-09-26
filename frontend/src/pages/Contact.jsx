@@ -4,7 +4,7 @@ import Title from '../components/Title'
 import NewsLetter from '../components/NewsLetter'
 const Contact = () => {
   return (
-    <div className='px-5 lg:px-40 sm:px-10'>
+    <div className='px-[4%]'>
       <div className='flex justify-center pt-10 text-2xl text-center'>
           <Title text1={'CONTACT'} text2={'US'}/>
       </div>

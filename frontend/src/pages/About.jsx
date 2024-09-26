@@ -4,7 +4,7 @@ import about from "../assets/about_img.png"
 import NewsLetter from '../components/NewsLetter'
 const About = () => {
   return (
-    <div className='px-5 lg:px-40 sm:px-10'>
+    <div className='px-[4%]'>
       <div className='flex justify-center pt-8 text-2xl font-semibold'>
         <Title text1={'ABOUT'} text2={'US'}/>
       </div>

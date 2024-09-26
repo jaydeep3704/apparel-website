@@ -10,7 +10,7 @@ const PlaceOrder = () => {
  const navigate=useNavigate()
 
   return (
-    <div className='flex flex-col justify-between gap-4 px-5 pt-5 lg:flex-row lg:px-40 sm:px-10 sm:pt-14 min-h-[80vh]'>
+    <div className='flex flex-col justify-between gap-4 px-[4%] pt-5 lg:flex-row  sm:pt-14 min-h-[80vh]'>
        {/* ---------------------Left Side --------------------------- */}
        <div className='sm:w-[480px] w-full flex flex-col gap-10'>
             <div className='text-2xl font-semibold'>

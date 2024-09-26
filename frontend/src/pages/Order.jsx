@@ -7,7 +7,7 @@ const Order = () => {
 
 
   return (
-    <div className='pt-16 lg:px-40 sm:px-10'>
+    <div className='px-[4%]'>
        <div className='text-2xl font-medium'>
             <Title text1={'MY'} text2={'ORDERS'}/>
        </div>
