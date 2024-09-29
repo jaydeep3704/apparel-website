@@ -14,19 +14,36 @@ import Cart from "./pages/Cart";
 import PlaceOrder from "./pages/PlaceOrder";
 import Order from "./pages/Order"
 import Login from "./pages/Login";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from "react";
+import { useSelector,useDispatch } from "react-redux";
+import { saveToken } from "./store/authSlice";
 const AppLayout = () => {
+  const token=useSelector((store)=>store.auth.token)
+  const dispatch=useDispatch()
+  useEffect(()=>{
+    if(!token && localStorage.getItem('token'))
+    {
+      dispatch(saveToken(localStorage.getItem('token')))
+    }
+   
+ })
+
+
   return (
-    <div>
+    <>
+      <ToastContainer/>
       <Navbar />
       <SearchBar/>
       <Outlet />
       <Footer/>
-    </div>
+    </>
   );
 };
 
 
-
+export const backendURL="http://localhost:5000"
 
 
 const appRouter=createBrowserRouter([

@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
+import { backendUrl } from '../App'
+import axios from 'axios'
+import { useAuth } from '../context/AuthContext'
+import { toast } from 'react-toastify'
 
 const Add = () => {
+
+  const {token}=useAuth()
 
   const [image1,setImage1]=useState(false)
   const [image2,setImage2]=useState(false)
@@ -16,12 +22,44 @@ const Add = () => {
   const[bestseller,setBestseller]=useState(false)
   const[sizes,setSizes]=useState([])
 
+
   const submitHandler=async (e)=>{
     e.preventDefault()
     try {
-      
+        const formData=new FormData()
+        formData.append("name",name)
+        formData.append("description",description)
+        formData.append("price",price)
+        formData.append("category",category)
+        formData.append("subCategory",subCategory)
+        formData.append("bestSeller",bestseller)
+        formData.append("sizes",JSON.stringify(sizes))
+        image1 && formData.append("image1",image1)
+        image2 && formData.append("image2",image2)
+        image3 && formData.append("image3",image3)
+        image4 && formData.append("image4",image4)
+        if(sizes.length!==0)
+        {
+          const response=await axios.post(backendUrl+"/api/product/add",formData,{headers:{token}})
+          toast.success(response.data.message)
+          setName('')
+          setPrice('')
+          setDescription('')
+          setCategory('Men')
+          setsubCategory('Topwear')
+          setBestseller(false)
+          setSizes([])
+          setImage1(false)
+          setImage2(false)
+          setImage3(false)
+          setImage4(false)
+        }
+        else{
+          toast.error("Sizes are not provided")
+        }
     } catch (error) {
-      
+         console.log(error)
+         toast.error(error)
     }
   }
 
@@ -80,7 +118,7 @@ const Add = () => {
            </div>
            <div>
             <p className='mb-2'>Product Price</p>
-            <input type="number" placeholder='25' className='w-full px-3 py-2 sm:w-[120px]' onChange={(e)=>setPrice(e.target.value)} value={price}/>
+            <input type="number" placeholder='25' className='w-full px-3 py-2 sm:w-[120px]' onChange={(e)=>setPrice(e.target.value)} value={price} required/>
            </div>
         </div>
 
@@ -92,16 +130,16 @@ const Add = () => {
               <p className={`px-3 py-2 cursor-pointer  ${sizes.includes('S')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>S</p>
             </div>
             <div onClick={()=>setSizes(prev=>prev.includes("M")?prev.filter(item=>item!=="M"):[...prev,"M"] )}>
-              <p className={`px-3 py-2 cursor-pointer bg-slate-200 ${sizes.includes('M')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>M</p>
+              <p className={`px-3 py-2 cursor-pointer  ${sizes.includes('M')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>M</p>
             </div>
             <div onClick={()=>setSizes(prev=>prev.includes("L")?prev.filter(item=>item!=="L"):[...prev,"L"] )}>
-              <p className={`px-3 py-2 cursor-pointer bg-slate-200 ${sizes.includes('L')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>L</p>
+              <p className={`px-3 py-2 cursor-pointer  ${sizes.includes('L')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>L</p>
             </div>
             <div onClick={()=>setSizes(prev=>prev.includes("XL")?prev.filter(item=>item!=="XL"):[...prev,"XL"] )}>
-              <p className={`px-3 py-2 cursor-pointer bg-slate-200 ${sizes.includes('XL')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>XL</p>
+              <p className={`px-3 py-2 cursor-pointer  ${sizes.includes('XL')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>XL</p>
             </div>
             <div onClick={()=>setSizes(prev=>prev.includes("XXL")?prev.filter(item=>item!=="XXL"):[...prev,"XXL"] )}>
-              <p className={`px-3 py-2 cursor-pointer bg-slate-200 ${sizes.includes('XXL')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>XXL</p>
+              <p className={`px-3 py-2 cursor-pointer  ${sizes.includes('XXL')?'bg-blue-400 text-white': 'bg-slate-200 text-black'}`}>XXL</p>
             </div>
 
            

@@ -12,7 +12,9 @@ export default {
     extend: {},
     fontFamily:{
       'dancing-script':["Dancing Script", "cursive"],
-      'prata':["Prata", "sans-serif"]
+      'prata':["Prata", "sans-serif"],
+      'ramraja':["Ramaraja", "sans-serif"]
+
     }
   },
   plugins:[fluid],

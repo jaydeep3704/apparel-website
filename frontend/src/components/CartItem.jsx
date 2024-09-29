@@ -17,14 +17,14 @@ const CartItem = ({ image, name, price, id, size, quantity }) => {
 
   // Handle removal of item from cart
   const handleRemoveFromCart = () => {
-    dispatch(removeFromCart({ id, size }));
+    dispatch(removeFromCart({ itemId:id, size }));
   };
 
   // Handle increment of item quantity
   const incrementQuantity = () => {
     const newQuantity = itemQuantity + 1;
     setItemQuantity(newQuantity);
-    dispatch(updateQuantity({ id, size, quantity: newQuantity }));
+    dispatch(updateQuantity({ itemId:id, size, quantity: newQuantity }));
   };
 
   // Handle decrement of item quantity
@@ -32,7 +32,7 @@ const CartItem = ({ image, name, price, id, size, quantity }) => {
     if (itemQuantity > 1) { // Ensure quantity does not go below 1
       const newQuantity = itemQuantity - 1;
       setItemQuantity(newQuantity);
-      dispatch(updateQuantity({ id, size, quantity: newQuantity }));
+      dispatch(updateQuantity({ itemId:id, size, quantity: newQuantity }));
     } else {
       handleRemoveFromCart();
     }
@@ -47,7 +47,7 @@ const CartItem = ({ image, name, price, id, size, quantity }) => {
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-medium">{name}</h2>
           <div className="flex items-center gap-4">
-            <span className="font-medium">${price}</span>
+            <span className="font-medium">₹ {price}</span>
             <span className="px-3 py-2 bg-gray-100">{size}</span>
           </div>
         </div>

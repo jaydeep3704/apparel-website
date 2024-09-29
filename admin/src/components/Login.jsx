@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { backendUrl } from '../App'
-
+import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
-const Login = ({setToken}) => {
+const Login = () => {
 
+const {token,setToken}=useAuth()
 const[email,setEmail]=useState('')
 const[password,setPassword]=useState('')
 
@@ -15,6 +16,7 @@ const onSubmitHandler=async(e)=>{
     const response=await axios.post(backendUrl+"/api/user/admin",{
       email,password
     })
+    console.log(response)
     if(response.data.success)
     {
       setToken(response.data.token)

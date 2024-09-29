@@ -3,21 +3,23 @@ import Product from "./Product";
 import Title from "./Title";
 import { useDispatch } from "react-redux";
 import { setProducts } from "../store/productSlice";
+import ProductGridShimmer from "./ProductGridShimmer";
 const ProductGrid = () => {
   const [latestProducts, setLatestProducts] = useState([]);
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const dispatch=useDispatch()
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://api.foreverbuy.in/api/product/list");
+      const res = await fetch("http://localhost:5000/api/product/list");
       const json = await res.json();
       const products = json.products;
+      console.log(products)
       dispatch(setProducts(products))
       const bestSeller = products.filter(
-        (product) => product.bestseller == true
+        (product) => product.bestSeller == true
       );
       setBestSellerProducts(bestSeller);
-      setLatestProducts(products.slice(0, 10));
+      setLatestProducts(products.slice(0, 8));
      
     } catch (error) {
       console.log(error);
@@ -28,6 +30,7 @@ const ProductGrid = () => {
     fetchProducts();
   }, []);
 
+
   return (
     // BestSeller
     <div className="w-full">
@@ -35,12 +38,12 @@ const ProductGrid = () => {
         <div className="flex justify-center py-8 text-3xl text-center">
           <Title text1={"LATEST"} text2={"COLLECTIONS"} />
         </div>
-        <div className="grid grid-cols-2 gap-4 gird sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-6">
+        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-y-20 gap-x-14">
           {latestProducts.map((product) => {
             return (
               <Product
                 price={product.price}
-                image={product.image}
+                image={product.images[0]}
                 key={product._id}
                 id={product._id}
                 name={product.name}
@@ -53,12 +56,12 @@ const ProductGrid = () => {
         <div className="flex justify-center py-8 text-3xl text-center">
           <Title text1={"BEST"} text2={"SELLERS"} />
         </div>
-        <div className="grid grid-cols-2 gap-4 gird sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-6">
+        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-y-20 gap-x-14">
           {bestSellerProducts.map((product) => {
             return (
               <Product
                 price={product.price}
-                image={product.image}
+                image={product.images[0]}
                 key={product._id}
                 id={product._id}
                 name={product.name}

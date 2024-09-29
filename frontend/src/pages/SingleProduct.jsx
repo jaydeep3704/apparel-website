@@ -1,35 +1,69 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import star from "../assets/icons/star_icon.png"
-import dullStar from "../assets/icons/star_dull_icon.png"
+import star from "../assets/icons/star_icon.png";
+import dullStar from "../assets/icons/star_dull_icon.png";
 import { addToCart } from "../store/cartSlice";
+import { FiPlus } from "react-icons/fi";
+import { FiMinus } from "react-icons/fi";
 import RelatedProducts from "../components/RelatedProducts";
+import { backendURL } from "../App";
+import { toast } from "react-toastify";
+import axios from "axios";
 const SingleProduct = () => {
   const { id } = useParams();
+
   const products = useSelector((store) => store.product.products);
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState("");
-  const [size,setSize]=useState("");
-  const dispatch=useDispatch()
+  const [quantity, setQuantity] = useState(1);
+  const [size, setSize] = useState("");
+  const dispatch = useDispatch();
+  const token=useSelector((store)=>store.auth.token)
 
+  const handleAddToCart = async () => {
+    const { images, name, price, _id } = productData;
 
-  const handleAddToCart=(productData)=>{
-        const {image,name,price,_id}=productData
-        if(size!=="")
-        { dispatch(addToCart({
-          image:image[0],
-          name:name,
-          price:price,
-          size:size,
-          id:_id,
-          quantity:1
-        }))
+    if (size !== "") {
+        const itemData = {
+            image: images[0],
+            name: name,
+            price: price,
+            size: size,
+            itemId: _id, // Using itemId instead of id for clarity
+            quantity: quantity,
+        };
+
+        dispatch(addToCart(itemData)); // Dispatch the item to the Redux store
+
+        if (token) {
+            try {
+                const response = await axios.post(
+                    `${backendURL}/api/cart/add`,
+                    {
+                        itemId: _id,
+                        quantity: quantity,
+                        size
+                    },
+                    { headers: { token } }
+                );
+
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message || "Failed to add to cart.");
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error("An error occurred while adding to cart.");
+            }
+        } else {
+            toast.warning("User not authenticated. Please log in.");
         }
-        else{
-          alert("Select size")
-        }
-  }
+    } else {
+        toast.warning("Select size.");
+    }
+};
 
 
   const fetchProductInfo = async () => {
@@ -37,84 +71,156 @@ const SingleProduct = () => {
       const product = products.filter((product) => {
         return product._id === id;
       })[0];
-      setProductData(product)
-      setImage(product.image[0])
+      setProductData(product);
+      setImage(product.images[0]);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleIncrement = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const handleDecrement = () => {
+    setQuantity((prev) => prev - 1);
   };
 
   useEffect(() => {
     fetchProductInfo();
   }, [id]);
 
-  return productData ? 
-  <div className="w-full pt-10 transition-opacity duration-500 ease-in opacity-100 px-[4%] ">
-    {/* Product Data  */}
-    <div className="flex flex-col h-full gap-12 sm:gap-12 sm:flex-row">
-        {/* product images  */}
-       <div className="flex flex-col-reverse gap-3 md:flex-row ">
-          <div className="flex justify-between sm:flex-col sm:justify-normal sm:w-[18.7%] w-full">
-              {
-                productData.image.map((item,index)=>{
-                  return <img key={index} src={item} className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer" onClick={()=>setImage(item)}/>
-                })
-              }
+  return productData ? (
+    <div className="w-full pt-10 transition-opacity duration-500 ease-in opacity-100 px-[4%]  ">
+      <div className="flex flex-wrap justify-center h-full gap-10 ">
+        <div className="md:w-[580px]  w-full sm:w-1/2 mb-5">
+          <div className=" md:h-[65vh] rounded-lg overflow-hidden mx-auto">
+            <img src={image} alt="" className="object-cover w-full h-full" />
           </div>
-          <div className="w-full sm:w-[80%]">
-                <img src={image} alt="" className="w-full h-auto" />
+          <div className="flex gap-2 mt-5">
+            {productData.images.map((image, index) => {
+              return (
+                <div
+                  className="w-[24%] rounded-md overflow-hidden"
+                  key={index}
+                  onClick={() => setImage(image)}
+                >
+                  <img
+                    src={image}
+                    alt=""
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              );
+            })}
           </div>
-       </div>
+        </div>
 
-      {/* product info */}
-      <div className="">
-         <h1 className="mt-2 text-2xl font-medium">{productData.name}</h1>
-         <div className="flex items-center gap-1 mt-2">
-            <img src={star} alt="" className="w-3 " />
-            <img src={star} alt="" className="w-3 " />
-            <img src={star} alt="" className="w-3 " />
-            <img src={star} alt="" className="w-3 " />
-            <img src={dullStar} alt="" className="w-3 " />
-            <p className="pl-2">(122)</p>
-         </div>
-         <p className="mt-5 text-3xl font-medium">$ {productData.price}</p>
-         <p className="mt-5 text-gray-500 md:w-4/5">{productData.description}</p>
-         <div className="flex flex-col gap-4 mt-5 text-lg ">
-              <p className="font-medium">Select Size</p>
-              <div className="flex gap-1">
-              {
-                productData.sizes.map((item,index)=>{
-                  return(
-                    <button className={`border py-2 px-4 bg-gray-100 ${item==size ? 'border-orange-500':''}`} onClick={()=>setSize(item)} key={index}>{item}</button>
-                  )
-                })
-              }
-              </div>
-              <button className="w-40 py-2 mt-2 text-center text-white bg-black border-none oultine-none" onClick={()=>handleAddToCart(productData)}>ADD TO CART</button>
-              <div className="flex flex-col gap-2 py-5 mt-5 text-sm text-gray-500 border-t border-gray-300">
-                  <p>100% Original product.</p>
-                  <p>Cash on delivery is available on this product.</p>
-                  <p>Easy return and exchange policy within 7 days.</p>
-              </div>
-         </div>
+        <div className="flex flex-col  w-full  md:flex-1  bg-slate-50 p-[4%] gap-5 rounded-xl">
+          <h1 className="text-2xl font-semibold lg:text-5xl md:text-4xl  mt-[10%]">
+            {productData.name}
+          </h1>
+          <p className="text-sm font-medium text-gray-600 md:w-3/4 md:text-lg">
+            {productData.description}
+          </p>
+          <p className="flex items-center gap-3 text-lg font-bold md:text-2xl">
+            ₹ {productData.price}{" "}
+            <span className="px-3 py-2 text-sm text-[#FF7D6E] bg-[#FEEFE2] rounded-md">
+              50%
+            </span>
+          </p>
+          <p className="text-lg line-through">₹ {productData.price + 400}</p>
+          <hr className="w-full h-[2px] bg-[#FF7D6E]" />
+          <div>
+            <p className="text-xl font-medium">Select Size</p>
+            <div className="flex gap-2 mt-3">
+              <span
+                className={`md:px-5 px-3 py-2 cursor-pointer rounded-lg font-semibold text-lg ${
+                  size === "S"
+                    ? "text-white bg-[#e45040]"
+                    : "text-[#FF7D6E] bg-[#FEEFE2]"
+                }`}
+                onClick={() => setSize("S")}
+              >
+                S
+              </span>
+              <span
+                className={`md:px-5 px-3 py-2 cursor-pointer rounded-lg font-semibold text-lg ${
+                  size === "M"
+                    ? "text-white bg-[#e45040]"
+                    : "text-[#FF7D6E] bg-[#FEEFE2]"
+                }`}
+                onClick={() => setSize("M")}
+              >
+                M
+              </span>
+              <span
+                className={`md:px-5 px-3 py-2 cursor-pointer rounded-lg font-semibold text-lg ${
+                  size === "L"
+                    ? "text-white bg-[#e45040]"
+                    : "text-[#FF7D6E] bg-[#FEEFE2]"
+                }`}
+                onClick={() => setSize("L")}
+              >
+                L
+              </span>
+              <span
+                className={`md:px-5 px-3 py-2 cursor-pointer rounded-lg font-semibold text-lg ${
+                  size === "XL"
+                    ? "text-white bg-[#e45040]"
+                    : "text-[#FF7D6E] bg-[#FEEFE2]"
+                }`}
+                onClick={() => setSize("XL")}
+              >
+                XL
+              </span>
+              <span
+                className={`md:px-5 px-3 py-2 cursor-pointer rounded-lg font-semibold text-lg ${
+                  size === "XXL"
+                    ? "text-white bg-[#e45040]"
+                    : "text-[#FF7D6E] bg-[#FEEFE2]"
+                }`}
+                onClick={() => setSize("XXL")}
+              >
+                XXL
+              </span>
+            </div>
+          </div>
+          <div className="flex gap-5">
+            <div className="flex items-center px-5 py-2 bg-[#ebecee]">
+              <button
+                className="px-2 text-lg  text-[#FF7D6E] font-bold cursor-pointer"
+                onClick={handleDecrement}
+                disabled={quantity == 1}
+              >
+                <FiMinus />
+              </button>
+              <span className="px-3 text-lg font-bold">{quantity}</span>
+              <button
+                className="px-2 text-lg text-[#FF7D6E] font-bold cursor-pointer"
+                onClick={handleIncrement}
+              >
+                <FiPlus />
+              </button>
+            </div>
+          </div>
+
+          <button className="text-center w-[250px] bg-[#e45040] border-none outline-none text-white  py-2 text-md font-semibold rounded-lg hover:bg-[#fa6150]  " onClick={handleAddToCart}>
+            Add To Cart
+          </button>
+        </div>
       </div>
-    </div>
-    <div className="mt-20">
-            <div className="flex"> 
-                <b className="px-5 py-3 text-sm border">Description</b>
-                <p className="px-5 py-3 text-sm border">Reviews (122)</p>
-            </div>
-            <div className="w-full p-5 border border-gray-300">
-                <p>An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.</p>
-                <p>E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.</p>
-            </div>
-    </div>
 
-    {/* Related Products */}
-    <RelatedProducts products={products} category={productData.category} subCategory={productData.subCategory}/>
-
-  </div> : 
-  <div></div>;
+      {/* Related Products */}
+      <RelatedProducts
+        products={products}
+        category={productData.category}
+        subCategory={productData.subCategory}
+      />
+    </div>
+  ) : (
+    <div></div>
+  );
 };
 
 export default SingleProduct;

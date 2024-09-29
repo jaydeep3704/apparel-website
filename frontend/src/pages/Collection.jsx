@@ -15,7 +15,7 @@ const Collection = () => {
  const dispatch=useDispatch()
   const fetchProductInfo=async ()=>{
     try {
-      const res = await fetch("https://api.foreverbuy.in/api/product/list");
+      const res = await fetch("http://localhost:5000/api/product/list");
       const json = await res.json();
       const products = json.products;
 
@@ -172,12 +172,12 @@ const Collection = () => {
         </div>
 
         {/* Product Container */}
-        <div className="grid grid-cols-2 gap-4 mt-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
+        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 w-fit lg:grid-cols-4 md:grid-cols-2 justify-items-center gap-y-20 gap-x-14">
           {filteredProducts.map((product) => {
             return (
               <Product
                 price={product.price}
-                image={product.image}
+                image={product.images[0]}
                 key={product._id}
                 id={product._id}
                 name={product.name}

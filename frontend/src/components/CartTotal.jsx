@@ -13,7 +13,7 @@ const handleCheckout=()=>{
 
 
 
-  const deliveryFee=20
+  const deliveryFee=50
   const cartItems = useSelector((store) => store.cart.cart_items);
   const total=useSelector((store)=>store.cart.totalPrice)
   const dispatch=useDispatch()  
@@ -28,9 +28,9 @@ const handleCheckout=()=>{
       <div className="flex items-center gap-3 py-5 text-2xl font-medium">
         <Title text1={'CART'} text2={'TOTALS'}/>
       </div>
-       <p className="flex justify-between py-2 border-b border-gray-300"><span>Subtotal</span><span>${total}</span></p>
-       <p className="flex justify-between py-2 border-b border-gray-300"><span>Delivery Fee</span><span>${deliveryFee}</span></p>
-       <p className="flex justify-between py-2 font-medium "><span>Total</span><span>${total+deliveryFee}</span></p>
+       <p className="flex justify-between py-2 border-b border-gray-300"><span>Subtotal</span><span>₹{total}</span></p>
+       <p className="flex justify-between py-2 border-b border-gray-300"><span>Delivery Fee</span><span>₹{deliveryFee}</span></p>
+       <p className="flex justify-between py-2 font-medium "><span>Total</span><span>₹{total+deliveryFee}</span></p>
        
     </div>
   </div>

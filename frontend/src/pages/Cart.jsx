@@ -31,14 +31,14 @@ const Cart = () => {
 
         <div>
           {cartItems.map((item) => {
-            const { image, name, price, id, size, quantity } = item;
+            const { image, name, price, itemId, size, quantity } = item;
             return (
               <CartItem
                 image={image}
                 name={name}
                 price={price}
-                id={id}
-                key={id}
+                id={itemId}
+                key={itemId}
                 size={size}
                 quantity={quantity}
               />

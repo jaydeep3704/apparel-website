@@ -7,6 +7,8 @@ import Orders from './pages/Orders'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
+import { AuthProvider } from './context/AuthContext'
+import { useAuth } from './context/AuthContext'
 
 
 import { ToastContainer } from 'react-toastify';
@@ -16,7 +18,8 @@ export const backendUrl=import.meta.env.VITE_BACKEND_URL
 
 const AppLayout=()=>{
 
-  const [token,setToken]=useState(localStorage.getItem('token') || '')
+  const {token,setToken}=useAuth()
+  
 
   
   useEffect(()=>{
@@ -32,7 +35,7 @@ const AppLayout=()=>{
           <div className='min-h-screen bg-gray-50'>
            
             <>
-            <Navbar setToken={setToken}/>
+            <Navbar />
             <hr />
             <div className='flex w-full'>
               <Sidebar/>
@@ -43,7 +46,7 @@ const AppLayout=()=>{
             </div>
             </>
           </div>
-        ):<Login setToken={setToken}/>
+        ):<Login />
       }
     </div>)
     
@@ -64,16 +67,16 @@ function App() {
       children:[
         {
           path:'/add',
-          element:<Add/>
+          element:<Add />
         },
         {
           path:'/list',
-          element:<List/>
+          element:<List />
         }
         ,
         {
           path:'/orders',
-          element:<Orders/>
+          element:<Orders />
         }
       ]
     }
@@ -81,8 +84,9 @@ function App() {
 
 
   return (
-  <RouterProvider router={router}/>
-   
+  <AuthProvider>
+    <RouterProvider router={router}/>
+   </AuthProvider>
   )
 }
 

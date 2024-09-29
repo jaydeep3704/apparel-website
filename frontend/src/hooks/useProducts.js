@@ -1,12 +1,12 @@
 
 import { useState,useEffect } from "react";
-
+import axios from "axios";
 const useProducts=()=>{
     const [products,setProducts]=useState([])
 
     const fetchProducts = async () => {
         try {
-          const res = await fetch("https://api.foreverbuy.in/api/product/list");
+          const res = await axios.get("https://localhost:5000/api/product/list");
           const json = await res.json();
           const products = json.products;
           setProducts(products)

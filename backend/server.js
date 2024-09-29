@@ -1,31 +1,32 @@
 import express from "express";
 import cors from 'cors';
-import "dotenv/config"
-import {connectDB} from "./config/mongodb.js";
+import "dotenv/config";
+import { connectDB } from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/user.routes.js";
 import productRouter from "./routes/product.routes.js";
-//app config
+import cartRouter from "./routes/cart.routes.js";
+// App config
+const app = express();
+const port = process.env.PORT || 4000;
 
-const app=express()
-const port=process.env.PORT || 4000
+connectDB();
+connectCloudinary();
 
-connectDB()
-connectCloudinary()
-//middlewares
-app.use(express.json())
-app.use(cors())
+// Middlewares
+app.use(express.json());
+app.use(cors({
+    origin: '*', // Allow all origins for debugging
+}));
 
-//api endpoints
+// API endpoints
+app.use('/api/user', userRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart',cartRouter);
+app.get('/', (req, res) => {
+    res.send('API WORKING');
+});
 
-app.use('/api/user',userRouter)
-app.use('/api/product',productRouter)
-
-app.get('/',(req,res)=>{
-    res.send('API WORKING')
-})
-
-
-app.listen(port,()=>{
-    console.log("Server Started on PORT : "+port)
-})
+app.listen(port, () => {
+    console.log("Server Started on PORT: " + port);
+});

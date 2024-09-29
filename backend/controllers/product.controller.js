@@ -14,11 +14,11 @@ const addProduct = async (req, res) => {
       sizes,
       bestSeller,
     } = req.body;
+  
     const image1 = req.files.image1 && req.files.image1[0];
     const image2 = req.files.image2 && req.files.image2[0];
     const image3 = req.files.image3 && req.files.image3[0];
     const image4 = req.files.image4 && req.files.image4[0];
-
     const images = [image1, image2, image3, image4].filter(
       (item) => item !== undefined
     );
@@ -62,16 +62,22 @@ const listProducts = async (req, res) => {
 };
 
 const removeProduct = async (req, res) => {
-    try {
-      
-        const product=await productModel.findByIdAndDelete(req.body.id) 
-       res.json({success:true,message:"Product deleted Successfully"})
-    } catch (error) {
-        console.log("remove product : ",error)
-        res.json({success:false,error:error.message})
+  try {
+    
 
-    }
+      const product = await productModel.findByIdAndDelete(req.body.id);
+
+      if (!product) {
+          return res.status(404).json({ success: false, message: "Product not found" });
+      }
+
+      res.json({ success: true, message: "Product deleted Successfully" });
+  } catch (error) {
+      console.log("remove product: ", error);
+      res.status(500).json({ success: false, error: error.message });
+  }
 };
+
 
 const singleProduct = async (req, res) => {
   try {
@@ -83,5 +89,7 @@ const singleProduct = async (req, res) => {
     res.json({success:false,error:error.message})
   }
 };
+
+
 
 export { addProduct, listProducts, removeProduct, singleProduct };
