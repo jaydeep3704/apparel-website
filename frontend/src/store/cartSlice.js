@@ -17,6 +17,10 @@ const cartSlice = createSlice({
         state.cart_items.push({ ...action.payload, quantity });
       }
     },
+
+    updateCart:(state,action)=>{
+      state.cart_items=action.payload
+    },
     
     removeFromCart: (state, action) => {
       const { id, size } = action.payload;
@@ -59,7 +63,8 @@ export const {
   clearCart, 
   updateQuantity, 
   setTotal, 
-  setUserCart 
+  setUserCart ,
+  updateCart
 } = cartSlice.actions;
 
 // Default export of the reducer

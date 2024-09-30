@@ -22,17 +22,14 @@ const SingleProduct = () => {
   const token=useSelector((store)=>store.auth.token)
 
   const handleAddToCart = async () => {
-    const { images, name, price, _id } = productData;
+    const {  _id } = productData;
 
     if (size !== "") {
         const itemData = {
-            image: images[0],
-            name: name,
-            price: price,
-            size: size,
-            itemId: _id, // Using itemId instead of id for clarity
-            quantity: quantity,
-        };
+          itemId: _id,
+          quantity: quantity,
+          size
+      };
 
         dispatch(addToCart(itemData)); // Dispatch the item to the Redux store
 
