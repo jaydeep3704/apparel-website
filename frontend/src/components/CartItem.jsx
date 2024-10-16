@@ -3,12 +3,14 @@ import bin from "../assets/icons/bin_icon.png";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { removeFromCart } from "../store/cartSlice";
+import {useDispatch} from "react-redux"
 
 const CartItem = ({ id, size, quantity }) => {
     const [itemQuantity, setItemQuantity] = useState(quantity);
     const [product, setProduct] = useState(null);
     const token = localStorage.getItem('token');
-
+    const dispatch=useDispatch()
     const fetchSingleProduct = async () => {
         try {
             const response = await axios.post("http://localhost:5000/api/product/single", { id });
@@ -60,8 +62,8 @@ const CartItem = ({ id, size, quantity }) => {
         try {
             const response = await axios.post("http://localhost:5000/api/cart/remove", { itemId: id,size }, { headers: { token } });
             if (response.data.success) {
-                toast.success(response.data.message);
-                // Optionally, you can also handle local state here to remove the item from the UI
+                console.log(id,size)
+                dispatch(removeFromCart({id,size}))
             } else {
                 toast.error(response.data.message || "Failed to remove item");
             }

@@ -92,7 +92,7 @@ const SingleProduct = () => {
       <div className="flex flex-wrap justify-center h-full gap-10 ">
         <div className="md:w-[580px]  w-full sm:w-1/2 mb-5">
           <div className=" md:h-[65vh] rounded-lg overflow-hidden mx-auto">
-            <img src={image} alt="" className="object-cover w-full h-full" />
+            <img src={image} alt="" className="object-top w-full " />
           </div>
           <div className="flex gap-2 mt-5">
             {productData.images.map((image, index) => {

@@ -1,35 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Product from "./Product";
 import Title from "./Title";
-import { useDispatch } from "react-redux";
-import { setProducts } from "../store/productSlice";
+import { useSelector } from "react-redux";
 import ProductGridShimmer from "./ProductGridShimmer";
+
 const ProductGrid = () => {
   const [latestProducts, setLatestProducts] = useState([]);
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
-  const dispatch=useDispatch()
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/product/list");
-      const json = await res.json();
-      const products = json.products;
-      console.log(products)
-      dispatch(setProducts(products))
-      const bestSeller = products.filter(
-        (product) => product.bestSeller == true
-      );
-      setBestSellerProducts(bestSeller);
-      setLatestProducts(products.slice(0, 8));
-     
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const products = useSelector((store) => store.product.products);
+  const loading = useSelector((store) => store.product.loading);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (products) {
+      setLatestProducts(products.slice(0, 8));
+      setBestSellerProducts(
+        products.filter((product) => product.bestSeller === true)
+      );
+    }
+  }, [products]);
 
+  if (!products) {
+    return <ProductGridShimmer />;
+  }
 
   return (
     // BestSeller

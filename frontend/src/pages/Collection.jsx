@@ -1,31 +1,20 @@
 import React,{useEffect,useState} from "react";
 import Product from "../components/Product";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { setProducts } from "../store/productSlice";
+
 
 
 const Collection = () => {
 
-  const [products,setProducts]=useState([])
   const [filteredProducts,setFilteredProducts]=useState([])
   const [categories,setCategories]=useState([])
   const [subcategories,setSubcategories]=useState([])
   const searchText=useSelector((store)=>store.search.searchText)
- const dispatch=useDispatch()
-  const fetchProductInfo=async ()=>{
-    try {
-      const res = await fetch("http://localhost:5000/api/product/list");
-      const json = await res.json();
-      const products = json.products;
+  
+  const products=useSelector((store)=>store.product.products)
 
-      setProducts(products)
-      setFilteredProducts(products)
-      dispatch(setProducts(products))
-     } catch (error) {
-      console.log("Collection Fetch ",error)
-     }
-  }
+
+
 
 
   const toggleCategory=(e)=>{
@@ -75,10 +64,6 @@ const Collection = () => {
 
 
   useEffect(()=>{
-      fetchProductInfo()
-  },[])
-
-  useEffect(()=>{
     applyFilter()
   },[categories,subcategories,searchText])
 
@@ -105,6 +90,7 @@ const Collection = () => {
      }
   }
  
+
 
 
 

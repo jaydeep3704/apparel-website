@@ -11,14 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchVisible } from "../store/searchSlice";
 import { saveToken } from "../store/authSlice";
-
+import { fetchProductData } from "../store/productSlice";
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart_items = useSelector((store) => store.cart.cart_items);
-  let total_items = cart_items.reduce((total, item) => total + item.quantity, 0);
+  let total_items = cart_items && cart_items.reduce((total, item) => total + item.quantity, 0);
   const location = useLocation();
   const pathName = location.pathname;
   const token = useSelector((store) => store.auth.token);
@@ -54,6 +54,11 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(()=>{
+    dispatch(fetchProductData())
+  },[])
+
 
   return (
     <>

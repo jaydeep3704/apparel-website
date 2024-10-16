@@ -58,7 +58,7 @@ const Add = () => {
           toast.error("Sizes are not provided")
         }
     } catch (error) {
-         console.log(error)
+       
          toast.error(error)
     }
   }

@@ -1,26 +1,25 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name: {
-        type: String,
+        type: String, // No quotes needed for types
         required: true,
     },
     email: {
-        type: String,
+        type: String, // No quotes needed for types
         required: true,
         unique: true,
     },
     password: {
-        type: String,
+        type: String, // No quotes needed for types
         required: true,
     },
     cart: {
         type: Object,
-        default: {},
+        default: {}, // Initialize cart as an empty object
     },
-}, { minimize: false });
+}, { minimize: false }); // Keep minimize: false to allow empty objects
 
-// Check if the model is already defined
-const userModel = mongoose.models.User || mongoose.model('User', userSchema);
+const userModel = mongoose.models.user || mongoose.model('user', userSchema);
 
 export default userModel;

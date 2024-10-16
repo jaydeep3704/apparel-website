@@ -5,18 +5,21 @@ import { useNavigate } from "react-router-dom";
 import CartTotal from "../components/CartTotal";
 import axios from "axios";
 import { updateCart } from "../store/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const [cartData, setCartData] = useState([]);
-
+    const dispatch=useDispatch()
+    const cart_items=useSelector((store)=>store.cart.cart_items)
     const getCartData = async () => {
         try {
             const response = await axios.post("http://localhost:5000/api/cart/get", {}, { headers: { token } });
             if (response.data.success) {
                 setCartItems(response.data.cart);
-                updateCart(response.data.cart)
+               
+
             } else {
                 console.log(response.data.message);
             }
@@ -28,6 +31,7 @@ const Cart = () => {
 
     useEffect(() => {
         getCartData();
+        
     }, []);
 
     useEffect(() => {
@@ -46,32 +50,32 @@ const Cart = () => {
         }
 
         setCartData(temp_data);
+        dispatch(updateCart(temp_data))
     }, [cartItems]);
 
-    return cartData.length > 0 ? (
+    return cart_items.length > 0 ? (
         <div className="px-[4%]">
-            <div className="">
+            <div>
                 <div className="flex items-center gap-3 py-5 text-2xl border-b border-gray-300">
                     <span className="font-medium text-gray-600">YOUR</span>
                     <span className="font-medium text-black">CART</span>
                     <span className="w-[50px] h-[2px] block bg-black"></span>
                 </div>
-
+    
                 <div>
-                    {cartData.map((item, index) => {
+                    {cart_items.map((item) => {
                         const { _id, quantity, size } = item;
                         return (
                             <CartItem
                                 id={_id}
                                 size={size}
                                 quantity={quantity}
-                                key={index}
-                             
+                                key={`${_id}-${size}`} // Unique key by combining _id and size
                             />
                         );
                     })}
                 </div>
-
+    
                 <div className="flex justify-end w-full">
                     <div className="flex flex-col items-end w-full lg:w-1/3">
                         <CartTotal />
@@ -92,6 +96,7 @@ const Cart = () => {
             <div className="text-lg">Add something to make it happy</div>
         </div>
     );
+    
 };
 
 export default Cart;

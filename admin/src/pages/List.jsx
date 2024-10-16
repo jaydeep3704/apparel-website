@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 const List = () => {
   const[list,setList]=useState([])
   const {token}=useAuth()
-  console.log(list)
+  
   const fetchList=async()=>{
     try {
       const response=await axios.get(backendUrl+"/api/product/list")
@@ -19,7 +19,7 @@ const List = () => {
         toast.error(response.data.message)
       }
     } catch (error) {
-      console.log(error)
+     
       toast.error(error.message)
     }
   }
@@ -33,7 +33,7 @@ const List = () => {
         
          
       } catch (error) {
-         console.log(error)
+      
          toast.error(error.message)
       }
   }
