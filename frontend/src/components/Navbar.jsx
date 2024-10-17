@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchVisible } from "../store/searchSlice";
 import { saveToken } from "../store/authSlice";
 import { fetchProductData } from "../store/productSlice";
+import { updateCart } from "../store/cartSlice";
+import axios from "axios"
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
@@ -21,8 +23,8 @@ const Navbar = () => {
   let total_items = cart_items && cart_items.reduce((total, item) => total + item.quantity, 0);
   const location = useLocation();
   const pathName = location.pathname;
-  const token = useSelector((store) => store.auth.token);
-
+  const token = localStorage.getItem('token');
+  
   const dropdownRef = useRef();
 
   const isActive = (path) => pathName === path;
@@ -55,9 +57,54 @@ const Navbar = () => {
     };
   }, []);
 
+
+  const [cartItems, setCartItems] = useState([]);
+  const [cartData, setCartData] = useState([]);
+  const getCartData = async () => {
+    try {
+        const response = await axios.post("http://localhost:5000/api/cart/get", {}, { headers: { token } });
+        if (response.data.success) {
+            setCartItems(response.data.cart);
+           
+
+        } else {
+            console.log(response.data.message);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+
   useEffect(()=>{
     dispatch(fetchProductData())
+    getCartData();
   },[])
+
+
+
+
+
+
+useEffect(() => {
+    const temp_data = [];
+
+    for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+            if (cartItems[items][item] > 0) {
+                temp_data.push({
+                    _id: items,
+                    quantity: cartItems[items][item],
+                    size: item
+                });
+            }
+        }
+    }
+
+    setCartData(temp_data);
+    dispatch(updateCart(temp_data))
+}, [cartItems]);
 
 
   return (

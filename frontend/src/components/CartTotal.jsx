@@ -5,7 +5,7 @@ import { useSelector ,useDispatch} from 'react-redux'
 import { setTotal } from '../store/cartSlice'
 import Title from './Title'
 const CartTotal = () => {
-
+ 
 const navigate=useNavigate()
 const handleCheckout=()=>{
     navigate('/order')
@@ -16,9 +16,14 @@ const handleCheckout=()=>{
   const deliveryFee=50
   const cartItems = useSelector((store) => store.cart.cart_items);
   const total=useSelector((store)=>store.cart.totalPrice)
+  const products=useSelector((store)=>store.product.products)
+  
+
+
   const dispatch=useDispatch()  
+  
   useEffect(()=>{
-     dispatch(setTotal())
+     dispatch(setTotal(products))
   },[cartItems])
   
   return (

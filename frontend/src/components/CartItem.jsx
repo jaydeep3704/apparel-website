@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { removeFromCart } from "../store/cartSlice";
 import {useDispatch} from "react-redux"
-
+import { updateQuantity } from "../store/cartSlice";
 const CartItem = ({ id, size, quantity }) => {
     const [itemQuantity, setItemQuantity] = useState(quantity);
     const [product, setProduct] = useState(null);
@@ -34,6 +34,11 @@ const CartItem = ({ id, size, quantity }) => {
                 headers: { token }
             });
             if (response.data.success) {
+                dispatch(updateQuantity({
+                    id,
+                    size,
+                    quantity:newQuantity
+                }))
                 toast.success(response.data.message);
             } else {
                 toast.error(response.data.message || "Failed to update cart");
@@ -47,7 +52,9 @@ const CartItem = ({ id, size, quantity }) => {
     const handleIncrement = () => {
         const newQuantity = itemQuantity + 1;
         setItemQuantity(newQuantity);
+      
         updateCart(newQuantity);
+       
     };
 
     const handleDecrement = () => {
@@ -55,6 +62,7 @@ const CartItem = ({ id, size, quantity }) => {
             const newQuantity = itemQuantity - 1;
             setItemQuantity(newQuantity);
             updateCart(newQuantity);
+            
         }
     };
 
