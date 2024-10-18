@@ -133,7 +133,7 @@ useEffect(() => {
                 </li>
               );
             })}
-            <button className="px-5 py-2 text-sm border rounded-2xl">Admin Panel</button>
+            
           </ul>
 
           <div className="flex gap-5 cursor-pointer md:gap-8">
