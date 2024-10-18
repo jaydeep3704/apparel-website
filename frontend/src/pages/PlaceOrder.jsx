@@ -5,12 +5,17 @@ import razorpay from '../assets/payment/razorpay_logo.png'
 import stripe from '../assets/payment/stripe_logo.png'
 import { useNavigate } from 'react-router-dom'
 import { backendURL } from '../App'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import { clearCart } from '../store/cartSlice'
+import { toast } from 'react-toastify'
 
 const PlaceOrder = () => {
 
 
   const navigate = useNavigate();
+  const dispatch=useDispatch();
+  const token=localStorage.getItem('token')
   const totalPrice=useSelector((store)=>store.cart.totalPrice)+50
   const cartItems=useSelector((store)=>store.cart.cart_items)
   const products=useSelector((store)=>store.product.products)
@@ -39,7 +44,7 @@ const PlaceOrder = () => {
 
  
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     
     let orderItems = [];
@@ -53,13 +58,14 @@ const PlaceOrder = () => {
                 let itemInfo=structuredClone(products.find((product)=>product._id===cartItems[items][item]))
                 itemInfo.size=cartItems[items]['size']
                 itemInfo.quantity=cartItems[items]['quantity']
-               
                 orderItems.push(itemInfo)
             }
           
             
         }
     }
+
+  
    
     let orderData={
         address:formData,
@@ -69,6 +75,28 @@ const PlaceOrder = () => {
 
     switch(method){
         case 'cod':
+            const response=await axios.post(backendURL+"/api/order/place",orderData,{headers:{token}})
+            if(response.success)
+            {
+              dispatch(clearCart())
+              toast.success("Order Placed")
+              navigate('/orders')
+            }
+            else{
+              toast.error(response.message)
+            }
+            break;
+
+        case 'stripe':
+            const responseStripe=await axios.post(backendURL+'/api/order/stripe',orderData,{headers:{token}})
+            if(responseStripe.data.success)
+            {
+              const {session_url}=responseStripe.data
+              window.location.replace(session_url)
+            }
+            else{
+              toast.error(responseStripe.data.message)
+            }
             break;
         
         default:

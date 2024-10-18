@@ -16,7 +16,7 @@ const Contact = () => {
             <br />Near Shivaji Chowk</p>
             <p className='text-gray-500'>Tel: (415) 555-0132
             <br />Email: admin@forever.com</p>
-            <p className='text-xl font-semibold text-gray-600'>Careers at HypeBay</p>
+            <p className='text-xl font-semibold text-gray-600'>Careers at Pakriti</p>
             <p className='text-gray-500'>Learn more about our teams and job openings.</p>
             <button className='px-10 py-3 transition duration-300 ease-in-out border border-black rounded hover:bg-black hover:text-white'>Explore Jobs</button>
           </div>

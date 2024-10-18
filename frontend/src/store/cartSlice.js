@@ -56,6 +56,10 @@ const cartSlice = createSlice({
       state.cart_items = action.payload;
       state.totalPrice = action.payload.reduce((total, item) => total + item.price * item.quantity, 0);
     },
+
+    clearCart:(state,action)=>{
+      state.cart_items.length=0
+    }
   },
 });
 

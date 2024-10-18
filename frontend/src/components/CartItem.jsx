@@ -12,6 +12,7 @@ const CartItem = ({ id, size, quantity }) => {
     const token = localStorage.getItem('token');
     const dispatch=useDispatch()
     const fetchSingleProduct = async () => {
+        
         try {
             const response = await axios.post("http://localhost:5000/api/product/single", { id });
             if (response.data.success) {

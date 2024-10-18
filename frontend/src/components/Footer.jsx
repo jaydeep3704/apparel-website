@@ -24,14 +24,14 @@ const Footer = () => {
             <ul className='flex flex-col gap-2 text-gray-600'>
               <li>+91 100-001-0001</li>
               <li>github</li>
-              <li>jaydeeppatil3704@gmail.com</li>
+              <li>prakriticlothing@gmail.com</li>
             </ul>
          </div>
 
 
       </div>
       <div className='py-5 text-sm text-center border-t border-gray-400'>
-      Copyright 2024 @jaydeeppatil - All Right Reserved.
+      Copyright 2024 @prakriticlothing - All Right Reserved.
       </div>
     </div>
   )
