@@ -19,6 +19,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { saveToken } from "./store/authSlice";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Verify from "./pages/Verify";
 const AppLayout = () => {
   const token=useSelector((store)=>store.auth.token)
   const dispatch=useDispatch()
@@ -50,6 +52,7 @@ const appRouter=createBrowserRouter([
   {
     path:'/',
     element:<AppLayout/>,
+    errorElement:<ErrorBoundary/>,
     children:[
       {
         path:'/',
@@ -88,7 +91,10 @@ const appRouter=createBrowserRouter([
       {
         path:'/login',
         element:<Login/>
-
+      },
+      {
+        path:'/verify',
+        element:<Verify/>  
       }
 
 

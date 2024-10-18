@@ -92,6 +92,7 @@ const PlaceOrder = () => {
             if(responseStripe.data.success)
             {
               const {session_url}=responseStripe.data
+              dispatch(clearCart())
               window.location.replace(session_url)
             }
             else{
