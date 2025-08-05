@@ -14,7 +14,7 @@ const ProductGrid = () => {
     if (products) {
       setLatestProducts(products.slice(0, 8));
       setBestSellerProducts(
-        products.filter((product) => product.bestSeller === true)
+        products.filter((product) => product.bestSeller === true).slice(0,4)
       );
     }
   }, [products]);
@@ -30,7 +30,7 @@ const ProductGrid = () => {
         <div className="flex justify-center py-8 text-3xl text-center">
           <Title text1={"LATEST"} text2={"COLLECTIONS"} />
         </div>
-        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-y-20 gap-x-14">
+        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-6">
           {latestProducts.map((product) => {
             return (
               <Product
@@ -48,7 +48,7 @@ const ProductGrid = () => {
         <div className="flex justify-center py-8 text-3xl text-center">
           <Title text1={"BEST"} text2={"SELLERS"} />
         </div>
-        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-y-20 gap-x-14">
+        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-6">
           {bestSellerProducts.map((product) => {
             return (
               <Product

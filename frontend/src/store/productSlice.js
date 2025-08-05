@@ -6,7 +6,7 @@ import axios from "axios"
 
 export const fetchProductData=createAsyncThunk('product/data',async ()=>{
   
-    const response=await axios.get(import.meta.env.VITE_BACKEND_URL+"/product/list")
+    const response=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/product/list`)
   
     const data=await response.data.products
     return data

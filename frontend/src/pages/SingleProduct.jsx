@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import star from "../assets/icons/star_icon.png";
-import dullStar from "../assets/icons/star_dull_icon.png";
 import { addToCart } from "../store/cartSlice";
 import { FiPlus } from "react-icons/fi";
 import { FiMinus } from "react-icons/fi";

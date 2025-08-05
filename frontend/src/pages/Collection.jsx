@@ -1,149 +1,129 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Product from "../components/Product";
-import { useSelector } from "react-redux";
-
-
-
+import { fetchProductData } from "../store/productSlice";
 const Collection = () => {
+  const dispatch = useDispatch();
 
-  const [filteredProducts,setFilteredProducts]=useState([])
-  const [categories,setCategories]=useState([])
-  const [subcategories,setSubcategories]=useState([])
-  const searchText=useSelector((store)=>store.search.searchText)
-  
-  const products=useSelector((store)=>store.product.products)
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
 
+  const searchText = useSelector((store) => store.search.searchText);
+  const products = useSelector((store) => store.product.products);
+  const loading = useSelector((store) => store.product.loading);
+  const error = useSelector((store) => store.product.error);
 
-
-
-
-  const toggleCategory=(e)=>{
-    if(e.target.checked)
-    {
-      setCategories((prev)=>[...prev,e.target.value])
+  useEffect(() => {
+    if (products === null) {
+      dispatch(fetchProductData());
     }
-    else{
-      const categoryList=categories.filter((category)=>{
-        return category!==e.target.value
-      })
-      setCategories(categoryList)
+  }, [products, dispatch]);
+
+  const toggleCategory = (e) => {
+    if (e.target.checked) {
+      setCategories((prev) => [...prev, e.target.value]);
+    } else {
+      const categoryList = categories.filter(
+        (category) => category !== e.target.value
+      );
+      setCategories(categoryList);
     }
-  }
-  const toggleSubCategory=(e)=>{
-    if(e.target.checked)
-    {
-      setSubcategories((prev)=>[...prev,e.target.value])
+  };
+
+  const toggleSubCategory = (e) => {
+    if (e.target.checked) {
+      setSubcategories((prev) => [...prev, e.target.value]);
+    } else {
+      const subcategoryList = subcategories.filter(
+        (subcategory) => subcategory !== e.target.value
+      );
+      setSubcategories(subcategoryList);
     }
-    else{
-      const subcategoryList=subcategories.filter((subcategory)=>{
-        return subcategory!==e.target.value
-      })
-      setSubcategories(subcategoryList)
+  };
+
+  const applyFilter = () => {
+    if (!products) return;
+
+    let productsCopy = products.slice();
+
+    if (searchText !== "") {
+      productsCopy = productsCopy.filter((product) =>
+        product.name.toLowerCase().includes(searchText.toLowerCase())
+      );
     }
-  }
+    if (categories.length > 0) {
+      productsCopy = productsCopy.filter((product) =>
+        categories.includes(product.category)
+      );
+    }
+    if (subcategories.length > 0) {
+      productsCopy = productsCopy.filter((product) =>
+        subcategories.includes(product.subCategory)
+      );
+    }
 
+    setFilteredProducts(productsCopy);
+  };
 
- const applyFilter=()=>{
-      let productsCopy=products.slice()
-      if(searchText!=="")
-      {
-        productsCopy=productsCopy.filter((product)=>{return product.name.toLowerCase().includes(searchText.toLowerCase())})
-      }
-      if(categories.length>0)
-      {
-         productsCopy=productsCopy.filter((product)=>{return categories.includes(product.category)})
-      }
-      if(subcategories.length>0)
-      {
-        productsCopy=productsCopy.filter((product)=>{return subcategories.includes(product.subCategory)})
-      }
-      setFilteredProducts(productsCopy)
- }
+  useEffect(() => {
+    applyFilter();
+  }, [categories, subcategories, searchText, products]);
 
+  const sortProducts = (e) => {
+    let fpCopy = filteredProducts.slice();
 
-
-
-  useEffect(()=>{
-    applyFilter()
-  },[categories,subcategories,searchText])
-
- 
-
-
-  const sortProducts=(e)=>{
-    console.log(e.target.value)
-     let fpCopy=filteredProducts.slice()
-
-     switch(e.target.value)
-     {
-      case 'lowtohigh':
-           const sortbylowtohigh=fpCopy.sort((product1,product2)=>product1.price-product2.price)
-           setFilteredProducts(sortbylowtohigh)
-           break;
-      case 'hightolow':
-           const sortbyhightolow=fpCopy.sort((product1,product2)=>product2.price-product1.price)
-           setFilteredProducts(sortbyhightolow)
-           break;
+    switch (e.target.value) {
+      case "lowtohigh":
+        fpCopy.sort((a, b) => a.price - b.price);
+        break;
+      case "hightolow":
+        fpCopy.sort((a, b) => b.price - a.price);
+        break;
       default:
-           applyFilter()
-           break;
-     }
-  }
- 
+        applyFilter();
+        return;
+    }
 
+    setFilteredProducts(fpCopy);
+  };
 
-
-
-
+  if (loading) return <p className="text-center mt-10">Loading products...</p>;
+  if (error) return <p className="text-center mt-10 text-red-600">Error: {error}</p>;
 
   return (
     <div className="flex flex-col justify-between gap-10 px-[4%] mt-10  md:flex-row">
-      {/* filters */}
+      {/* Filters */}
       <div className="flex flex-col gap-5 lg:w-[20%] w-full">
         <p className="mb-3 text-xl font-medium uppercase">Filters</p>
         <div className="w-full py-5 pl-5 border border-gray-300">
           <p className="text-lg font-medium uppercase">Categories</p>
-          
           <div className="flex flex-col gap-2 mt-5">
-            <label htmlFor="" className="flex items-center gap-2">
-              <input type="checkbox" onChange={toggleCategory} value={'Men'}/>
-              Men
-            </label>
-            <label htmlFor="" className="flex items-center gap-2">
-              <input type="checkbox" onChange={toggleCategory} value={'Women'}/>
-              women
-            </label>
-            <label htmlFor="" className="flex items-center gap-2">
-              <input type="checkbox" onChange={toggleCategory} value={'Kids'}/>
-              Kids
-            </label>
-          
+            {["Men", "Women", "Kids"].map((cat) => (
+              <label key={cat} className="flex items-center gap-2">
+                <input type="checkbox" onChange={toggleCategory} value={cat} />
+                {cat}
+              </label>
+            ))}
           </div>
         </div>
         <div className="w-full py-5 pl-5 border border-gray-300">
           <p className="text-lg font-medium uppercase">Type</p>
           <div className="flex flex-col gap-2 mt-5">
-            <label htmlFor="" className="flex items-center gap-2">
-              <input type="checkbox" value={'Topwear'} onChange={toggleSubCategory}/>
-              Topwear
-            </label>
-            <label htmlFor="" className="flex items-center gap-2"  >
-              <input type="checkbox" value={'Bottomwear'} onChange={toggleSubCategory}/>
-              Bottomwear
-            </label>
-            <label htmlFor="" className="flex items-center gap-2">
-              <input type="checkbox" value={'Winterwear'} onChange={toggleSubCategory} />
-              Winterwear
-            </label>
+            {["Topwear", "Bottomwear", "Winterwear"].map((type) => (
+              <label key={type} className="flex items-center gap-2">
+                <input type="checkbox" value={type} onChange={toggleSubCategory} />
+                {type}
+              </label>
+            ))}
           </div>
         </div>
       </div>
-      <div className="md:w-[78%]">
 
+      {/* Product List */}
+      <div className="md:w-[78%]">
         <div className="flex justify-between">
-          <div
-            className={`flex items-center  w-full gap-3 md:text-2xl text-xl font-[400]`}
-          >
+          <div className="flex items-center w-full gap-3 md:text-2xl text-xl font-[400]">
             <span className="text-gray-600">ALL</span>
             <span className="text-gray-800">COLLECTIONS</span>
             <span className="block w-[50px] h-[2px] bg-black"></span>
@@ -157,25 +137,19 @@ const Collection = () => {
           </div>
         </div>
 
-        {/* Product Container */}
+        {/* Product Cards */}
         <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 w-fit lg:grid-cols-4 md:grid-cols-2 justify-items-center gap-y-20 gap-x-14">
-          {filteredProducts.map((product) => {
-            return (
-              <Product
-                price={product.price}
-                image={product.images[0]}
-                key={product._id}
-                id={product._id}
-                name={product.name}
-              />
-            );
-          })}
+          {filteredProducts.map((product) => (
+            <Product
+              price={product.price}
+              image={product.images[0]}
+              key={product._id}
+              id={product._id}
+              name={product.name}
+            />
+          ))}
         </div>
-
       </div>
-
-      
-
     </div>
   );
 };

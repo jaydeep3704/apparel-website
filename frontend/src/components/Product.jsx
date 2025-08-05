@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Product = ({ id, image, name, price }) => {
   return (
-    <Link to={`/product/${id}`} className='w-[40vw] md:w-[15vw]'>
+    <Link to={`/product/${id}`} className='w-full md:w-[15vw]'>
       <div className="duration-500 bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl ">
         <img 
           src={image}

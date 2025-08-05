@@ -16,7 +16,7 @@ const RelatedProducts = ({products,category,subCategory}) => {
     <div className="flex justify-center w-full py-8 text-3xl">
       <Title text1={"RELATED"} text2={"PRODUCTS"} />
     </div>
-    <div className="grid justify-center grid-cols-1 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-y-20 gap-x-10">
+    <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 sm:grid-cols-2 w-fit lg:grid-cols-4 md:grid-cols-3 justify-items-center gap-6">
       {relatedProducts.map((product) => {
         return (
           <Product
