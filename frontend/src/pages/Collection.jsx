@@ -138,7 +138,7 @@ const Collection = () => {
         </div>
 
         {/* Product Cards */}
-        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 w-fit lg:grid-cols-4 md:grid-cols-2 justify-items-center gap-y-20 gap-x-14">
+        <div className="grid justify-center grid-cols-2 mx-auto mt-10 mb-5 w-fit lg:grid-cols-4 md:grid-cols-2 justify-items-center gap-6">
           {filteredProducts.map((product) => (
             <Product
               price={product.price}
