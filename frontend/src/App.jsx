@@ -45,8 +45,7 @@ const AppLayout = () => {
 };
 
 
-export const backendURL="http://localhost:5000"
-
+export const backendURL=import.meta.env.VITE_BACKEND_URL
 
 const appRouter=createBrowserRouter([
   {
