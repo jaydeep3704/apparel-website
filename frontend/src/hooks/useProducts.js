@@ -6,7 +6,7 @@ const useProducts=()=>{
 
     const fetchProducts = async () => {
         try {
-          const res = await fetch("http://localhost:5000/api/product/list");
+          const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/product/list`);
           const json = await res.json();
           setProducts(json.products)
          

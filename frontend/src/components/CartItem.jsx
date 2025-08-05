@@ -14,7 +14,7 @@ const CartItem = ({ id, size, quantity }) => {
     const fetchSingleProduct = async () => {
         
         try {
-            const response = await axios.post("http://localhost:5000/api/product/single", { id });
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product/single`, { id });
             if (response.data.success) {
                 const item = response.data.product;
                 setProduct(item);
@@ -31,7 +31,7 @@ const CartItem = ({ id, size, quantity }) => {
                 size,
                 quantity: newQuantity
             };
-            const response = await axios.post("http://localhost:5000/api/cart/update", data, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart/update`, data, {
                 headers: { token }
             });
             if (response.data.success) {
@@ -69,7 +69,7 @@ const CartItem = ({ id, size, quantity }) => {
 
     const handleRemove = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/api/cart/remove", { itemId: id,size }, { headers: { token } });
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart/remove`, { itemId: id,size }, { headers: { token } });
             if (response.data.success) {
                 console.log(id,size)
                 dispatch(removeFromCart({id,size}))

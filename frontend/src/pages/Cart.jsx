@@ -15,7 +15,7 @@ const Cart = () => {
     const cart_items=useSelector((store)=>store.cart.cart_items)
     const getCartData = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/api/cart/get", {}, { headers: { token } });
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart/get`, {}, { headers: { token } });
             if (response.data.success) {
                 setCartItems(response.data.cart);
                
